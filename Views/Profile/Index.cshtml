@@ -1,0 +1,64 @@
+﻿@model raceDay_Part3.Models.ProfileImageViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+
+        <h2>My Profile</h2>
+
+        <hr />
+
+        <h4>Profile Picture</h4>
+
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+            <img src="@Model.ImagePath"
+                 alt="Profile Picture"
+                 class="rounded-circle mb-3"
+                 style="width:150px;height:150px;object-fit:cover;" />
+        }
+        else
+        {
+            <p>No profile picture uploaded yet.</p>
+        }
+
+        <form asp-controller="Profile"
+              asp-action="Upload"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div class="mb-3">
+
+                <label asp-for="ProfileImage"
+                       class="form-label">
+                    Select Profile Picture
+                </label>
+
+                <input asp-for="ProfileImage"
+                       type="file"
+                       class="form-control"
+                       accept=".jpg,.jpeg,.png" />
+
+                <span asp-validation-for="ProfileImage"
+                      class="text-danger"></span>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Upload Picture
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
