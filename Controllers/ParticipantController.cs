@@ -96,5 +96,31 @@ namespace raceDay_Part3.Controllers
             return View(results);
         }//end of displaying results method
 
+        // Cancel an enrolment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelEnrolment(int id)
+        {//start of cancel method
+            string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
+
+            if (string.IsNullOrEmpty(cookie))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            string result = await _apiService.CancelEnrolmentAsync(id, cookie);
+
+            if (result.Contains("successfully"))
+            {
+                TempData["Success"] = result;
+            }
+            else
+            {
+                TempData["Error"] = result;
+            }
+
+            return RedirectToAction("MyEnrolments");
+        }//end of cancel method
+
     }//end of class
 }//end of namespace

@@ -242,5 +242,27 @@ namespace raceDay_Part3.Services
                    ?? new List<ResultViewModel>();
         }//end of results method
 
+        // Cancel a participant's enrolment
+        public async Task<string> CancelEnrolmentAsync(int enrolmentID, string? cookie)
+        {//start of cancel method
+            using var request = new HttpRequestMessage(
+                HttpMethod.Delete,
+                $"api/enrolment/{enrolmentID}");
+
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return "Enrolment cancelled successfully.";
+            }
+
+            return await response.Content.ReadAsStringAsync();
+        }//end of cancel method
+
     }//end of class
 }//end of namespace

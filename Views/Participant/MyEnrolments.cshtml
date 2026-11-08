@@ -7,6 +7,20 @@
 <div class="container mt-4">
     <h2>My Enrolments</h2>
 
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
     @if (Model == null || !Model.Any())
     {
         <div class="alert alert-info">
@@ -25,8 +39,10 @@
                         <th>Category</th>
                         <th>Payment</th>
                         <th>Amount</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var item in Model)
                     {
@@ -37,10 +53,35 @@
                             <td>@item.CategoryName</td>
                             <td>@item.PaymentStatus</td>
                             <td>@item.PaymentAmount.ToString("C")</td>
+
+                            <td>
+                                <form asp-controller="Participant"
+                                      asp-action="CancelEnrolment"
+                                      method="post"
+                                      onsubmit="return confirm('Are you sure you want to cancel this enrolment?');">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@item.EnrolmentID" />
+
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm">
+                                        Cancel
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
     }
+
+    <a asp-controller="Home"
+       asp-action="ParticipantDashboard"
+       class="btn btn-secondary mt-3">
+        Back to Dashboard
+    </a>
 </div>
