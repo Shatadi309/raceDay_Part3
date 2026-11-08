@@ -141,5 +141,30 @@ namespace raceDay_Part3.Services
 
             return await response.Content.ReadAsStringAsync();
         }
+
+        // Get one event by ID
+        public async Task<EventViewModel?> GetEventByIdAsync(int eventID)
+        {
+            var response = await _httpClient.GetAsync(
+                $"api/events/{eventID}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await response.Content.ReadFromJsonAsync<EventViewModel>();
+        }
+
+        // Get all event categories
+        public async Task<List<CategoryViewModel>> GetCategoriesAsync()
+        {
+            var response = await _httpClient.GetAsync("api/categories");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>()
+                   ?? new List<CategoryViewModel>();
+        }
     }//end of class
 }//end of namespace

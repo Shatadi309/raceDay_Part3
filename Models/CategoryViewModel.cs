@@ -4,7 +4,7 @@
     {//start of class
         public int CategoryID { get; set; }
 
-        public string CategoryName { get; set; } = "";
+        public string CategoryName { get; set; } = string.Empty;
 
         public string? CategoryDescription { get; set; }
     }//end of class
