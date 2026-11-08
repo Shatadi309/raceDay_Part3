@@ -12,5 +12,23 @@
             This area is for participants to view available events,
             manage their enrolments and check their results.
         </p>
+
+        <hr />
+
+        <h5>Participant Activities</h5>
+
+        <p>Browse events and find one you would like to participate in.</p>
+
+        <a asp-controller="Participant"
+           asp-action="Events"
+           class="btn btn-primary">
+            View Available Events
+        </a>
+
+        <a asp-controller="Participant"
+           asp-action="MyEnrolments"
+           class="btn btn-success">
+            My Enrolments
+        </a>
     </div>
 </div>

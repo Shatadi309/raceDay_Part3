@@ -1,0 +1,46 @@
+﻿@model List<raceDay_Part3.Models.EnrolmentViewModel>
+
+@{
+    ViewData["Title"] = "My Enrolments";
+}
+
+<div class="container mt-4">
+    <h2>My Enrolments</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            You have not enrolled in any events yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Category</th>
+                        <th>Payment</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.EventName</td>
+                            <td>@item.EventDate.ToString("dd MMM yyyy")</td>
+                            <td>@item.Location</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.PaymentStatus</td>
+                            <td>@item.PaymentAmount.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

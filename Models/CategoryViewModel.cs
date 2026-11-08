@@ -2,6 +2,8 @@
 {//start of namespace
     public class CategoryViewModel
     {//start of class
+        public int EventCategoryID { get; set; }
+
         public int CategoryID { get; set; }
 
         public string CategoryName { get; set; } = string.Empty;
