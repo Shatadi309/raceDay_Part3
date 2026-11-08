@@ -27,8 +27,10 @@ namespace raceDay_Part3.Controllers
 
         // Display the Create Event form
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Categories = await _apiService.GetCategoriesAsync();
+
             return View();
         }
 
@@ -37,23 +39,40 @@ namespace raceDay_Part3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EventViewModel model)
         {
+            // Check that a category has been selected
+            if (model.CategoryID <= 0)
+            {
+                ModelState.AddModelError(
+                    "CategoryID",
+                    "Please select an event category.");
+            }
+
+            // Check whether the form is valid
             if (!ModelState.IsValid)
             {
+                ViewBag.Categories = await _apiService.GetCategoriesAsync();
+
                 return View(model);
             }
 
+            // Get the API session cookie
             string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
 
+            // Send the event to the API
             string result = await _apiService.CreateEventAsync(model, cookie);
 
-            if (result.Contains("EventID", StringComparison.OrdinalIgnoreCase))
+            // Check whether the event was created successfully
+            if (string.IsNullOrWhiteSpace(result))
             {
                 TempData["Success"] = "Event created successfully.";
 
                 return RedirectToAction("Index");
             }
 
+            // Display an error if the event was not created
             ModelState.AddModelError("", result);
+
+            ViewBag.Categories = await _apiService.GetCategoriesAsync();
 
             return View(model);
         }//end of method

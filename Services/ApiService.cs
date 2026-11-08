@@ -112,7 +112,14 @@ namespace raceDay_Part3.Services
 
             var response = await _httpClient.SendAsync(request);
 
-            return await response.Content.ReadAsStringAsync();
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return responseBody;
+            }
+
+            return "";
         }
 
         // Update an existing event

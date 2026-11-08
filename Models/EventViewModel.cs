@@ -23,7 +23,6 @@ namespace raceDay_Part3.Models
 
         public int UserID { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Please select an event category.")]
         public int CategoryID { get; set; }
     }//end of class
 }//end of namespace
