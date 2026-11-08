@@ -1,6 +1,8 @@
 ﻿
+using System.Collections.Generic;
 using System.Net.Http.Json;
 using raceDay_Part3.Models;
+
 
 namespace raceDay_Part3.Services
 {//start of namespace
@@ -74,5 +76,70 @@ namespace raceDay_Part3.Services
 
             return await response.Content.ReadAsStringAsync();
         }//end of logout method
+
+        // Get all events
+        public async Task<List<EventViewModel>> GetEventsAsync()
+        {
+            var response = await _httpClient.GetAsync("api/events");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<EventViewModel>>()
+                   ?? new List<EventViewModel>();
+        }
+
+        // Create a new event
+        public async Task<string> CreateEventAsync(
+            EventViewModel model, string? cookie)
+        {
+            using var request = new HttpRequestMessage(
+                HttpMethod.Post, "api/events");
+
+            request.Content = JsonContent.Create(new
+            {
+                EventName = model.EventName,
+                EventDescription = model.EventDescription,
+                EventDate = model.EventDate,
+                Location = model.Location,
+                EntryFee = model.EntryFee,
+                CategoryID = model.CategoryID
+            });
+
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await _httpClient.SendAsync(request);
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        // Update an existing event
+        public async Task<string> UpdateEventAsync(
+            EventViewModel model)
+        {
+            var response = await _httpClient.PutAsJsonAsync(
+                $"api/events/{model.EventID}",
+                new
+                {
+                    EventName = model.EventName,
+                    EventDescription = model.EventDescription,
+                    EventDate = model.EventDate,
+                    Location = model.Location,
+                    EntryFee = model.EntryFee
+                });
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        // Delete an event
+        public async Task<string> DeleteEventAsync(int eventID)
+        {
+            var response = await _httpClient.DeleteAsync(
+                $"api/events/{eventID}");
+
+            return await response.Content.ReadAsStringAsync();
+        }
     }//end of class
 }//end of namespace

@@ -93,9 +93,15 @@ namespace raceDay_Part3.Controllers
             HttpContext.Session.SetString("Role", role);
 
             if (role == "Organizer")
-                return RedirectToAction("Dashboard", "Home");
+            {
+                return RedirectToAction("OrganizerDashboard", "Home");
+            }
+            else if (role == "Participant")
+            {
+                return RedirectToAction("ParticipantDashboard", "Home");
+            }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
         }
 
         [HttpPost]
