@@ -81,5 +81,20 @@ namespace raceDay_Part3.Controllers
             return View(enrolments);
         }//end of displaying method
 
+        // Display a participant's results
+        public async Task<IActionResult> MyResults()
+        {//start of displaying results method
+            string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
+
+            if (string.IsNullOrEmpty(cookie))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var results = await _apiService.GetMyResultsAsync(cookie);
+
+            return View(results);
+        }//end of displaying results method
+
     }//end of class
 }//end of namespace
