@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Participant Dashboard";
+}
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2>Participant Dashboard</h2>
+
+        <p>Welcome, @Context.Session.GetString("FullName")!</p>
+
+        <p>
+            This area is for participants to view available events,
+            manage their enrolments and check their results.
+        </p>
+    </div>
+</div>
