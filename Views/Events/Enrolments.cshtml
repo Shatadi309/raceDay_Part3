@@ -1,0 +1,52 @@
+﻿@model List<raceDay_Part3.Models.OrganizerEnrolmentViewModel>
+
+@{
+    ViewData["Title"] = "Event Enrolments";
+}
+
+<div class="container mt-4">
+    <h2>Event Enrolments</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No participants have enrolled in this event yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Enrolment ID</th>
+                        <th>Participant ID</th>
+                        <th>Event Category ID</th>
+                        <th>Enrolment Date</th>
+                        <th>Payment Status</th>
+                        <th>Payment Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.EnrolmentID</td>
+                            <td>@item.UserID</td>
+                            <td>@item.EventCategoryID</td>
+                            <td>@item.EnrolmentDate.ToString("dd MMM yyyy")</td>
+                            <td>@item.PaymentStatus</td>
+                            <td>@item.PaymentAmount.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <a asp-controller="Events"
+       asp-action="Index"
+       class="btn btn-secondary">
+        Back to Events
+    </a>
+</div>

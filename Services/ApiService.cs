@@ -264,5 +264,26 @@ namespace raceDay_Part3.Services
             return await response.Content.ReadAsStringAsync();
         }//end of cancel method
 
+        // Get enrolments for a specific event
+        public async Task<List<OrganizerEnrolmentViewModel>> GetEventEnrolmentsAsync(
+            int eventID, string? cookie)
+        {//start of method
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                $"api/events/{eventID}/enrolment");
+
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<OrganizerEnrolmentViewModel>>()
+                   ?? new List<OrganizerEnrolmentViewModel>();
+        }//end of method
+
     }//end of class
 }//end of namespace

@@ -156,5 +156,22 @@ namespace raceDay_Part3.Controllers
             return RedirectToAction("Index");
         }//end of confirm and delete
 
+        // View participants enrolled in an event
+        public async Task<IActionResult> Enrolments(int id)
+        {//start of method
+            string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
+
+            if (string.IsNullOrEmpty(cookie))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var enrolments = await _apiService.GetEventEnrolmentsAsync(id, cookie);
+
+            ViewBag.EventID = id;
+
+            return View(enrolments);
+        }//end of method
+
     }//end of class
 }//end of namespace
