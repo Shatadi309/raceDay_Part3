@@ -221,5 +221,26 @@ namespace raceDay_Part3.Services
                    ?? new List<EnrolmentViewModel>();
         }//end of participant's enrolment method
 
+
+        // Get a participant's own results
+        public async Task<List<ResultViewModel>> GetMyResultsAsync(string? cookie)
+        {//start of results method
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                "api/result/me");
+
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<ResultViewModel>>()
+                   ?? new List<ResultViewModel>();
+        }//end of results method
+
     }//end of class
 }//end of namespace
