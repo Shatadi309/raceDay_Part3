@@ -1,3 +1,6 @@
+using raceDay_Part3.Services;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -12,6 +15,14 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddHttpClient<ApiService>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["ApiSettings:BaseUrl"]!
+    );
+});
+
 
 var app = builder.Build();
 
