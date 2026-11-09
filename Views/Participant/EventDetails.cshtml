@@ -4,36 +4,42 @@
     ViewData["Title"] = "Event Details";
 }
 
-<div class="container mt-4">
-    <h2 class="mb-3">Event Details</h2>
+<div class="participant-details-page">
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Success"]
-        </div>
-    }
+    <div class="participant-details-card">
 
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["Error"]
-        </div>
-    }
+        <span class="participant-page-label">EVENT INFORMATION</span>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h3>@Model.EventName</h3>
-            <p>@Model.EventDescription</p>
-            <hr />
+        <h2>@Model.EventName</h2>
 
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+
+        <p class="participant-details-description">
+            @Model.EventDescription
+        </p>
+
+        <div class="participant-event-information">
             <p><strong>Event Date:</strong> @Model.EventDate.ToString("dd MMMM yyyy")</p>
             <p><strong>Location:</strong> @Model.Location</p>
             <p><strong>Entry Fee:</strong> @Model.EntryFee.ToString("C")</p>
+        </div>
 
-            <hr />
+        <div class="participant-enrolment-section">
 
             <h5>Enrol in this Event</h5>
+            <p>Select the category you would like to participate in.</p>
 
             @if (Model.Categories != null && Model.Categories.Any())
             {
@@ -67,7 +73,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="participant-enrol-button">
                         Enrol in Event
                     </button>
                 </form>
@@ -79,11 +85,14 @@
                 </div>
             }
 
-            <a asp-controller="Participant"
-               asp-action="Events"
-               class="btn btn-secondary mt-3">
-                Back to Events
-            </a>
         </div>
+
+        <a asp-controller="Participant"
+           asp-action="Events"
+           class="participant-back-button">
+            Back to Events
+        </a>
+
     </div>
+
 </div>

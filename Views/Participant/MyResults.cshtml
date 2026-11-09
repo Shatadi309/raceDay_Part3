@@ -4,39 +4,60 @@
     ViewData["Title"] = "My Results";
 }
 
-<div class="container mt-4">
-    <h2>My Results</h2>
+<div class="participant-results-page">
+
+    <div class="participant-results-heading">
+        <span class="participant-page-label">YOUR RACEDAY PERFORMANCE</span>
+        <h2>My Results</h2>
+        <p>View your recorded race positions and finishing times.</p>
+    </div>
 
     @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info">
-            No results are available yet.
+        <div class="participant-empty">
+            <h4>No Results Available</h4>
+            <p>Your race results will appear here once they have been recorded.</p>
         </div>
     }
     else
     {
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Result ID</th>
-                        <th>Enrolment ID</th>
-                        <th>Position</th>
-                        <th>Finish Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+        <div class="participant-data-card">
+
+            <div class="participant-data-heading">
+                <h5>Your Race Results</h5>
+                <span>@Model.Count() result(s)</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table participant-data-table">
+                    <thead>
                         <tr>
-                            <td>@item.ResultID</td>
-                            <td>@item.EnrolmentID</td>
-                            <td>@item.Position</td>
-                            <td>@item.FinishTime</td>
+                            <th>Result ID</th>
+                            <th>Enrolment ID</th>
+                            <th>Position</th>
+                            <th>Finish Time</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ResultID</td>
+                                <td>@item.EnrolmentID</td>
+                                <td>
+                                    <span class="participant-position">
+                                        @item.Position
+                                    </span>
+                                </td>
+                                <td>@item.FinishTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     }
+
 </div>

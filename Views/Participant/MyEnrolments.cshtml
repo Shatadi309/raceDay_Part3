@@ -4,8 +4,13 @@
     ViewData["Title"] = "My Enrolments";
 }
 
-<div class="container mt-4">
-    <h2>My Enrolments</h2>
+<div class="participant-enrolments-page">
+
+    <div class="participant-enrolments-heading">
+        <span class="participant-page-label">YOUR RACEDAY ACTIVITY</span>
+        <h2>My Enrolments</h2>
+        <p>View and manage the events you have enrolled in.</p>
+    </div>
 
     @if (TempData["Success"] != null)
     {
@@ -23,65 +28,76 @@
 
     @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info">
-            You have not enrolled in any events yet.
+        <div class="participant-empty">
+            <h4>No Enrolments Yet</h4>
+            <p>You have not enrolled in any events yet.</p>
         </div>
     }
     else
     {
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Event</th>
-                        <th>Date</th>
-                        <th>Location</th>
-                        <th>Category</th>
-                        <th>Payment</th>
-                        <th>Amount</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+        <div class="participant-data-card">
 
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            <div class="participant-data-heading">
+                <h5>Your Enrolment Records</h5>
+                <span>@Model.Count() enrolment(s)</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table participant-data-table">
+                    <thead>
                         <tr>
-                            <td>@item.EventName</td>
-                            <td>@item.EventDate.ToString("dd MMM yyyy")</td>
-                            <td>@item.Location</td>
-                            <td>@item.CategoryName</td>
-                            <td>@item.PaymentStatus</td>
-                            <td>@item.PaymentAmount.ToString("C")</td>
-
-                            <td>
-                                <form asp-controller="Participant"
-                                      asp-action="CancelEnrolment"
-                                      method="post"
-                                      onsubmit="return confirm('Are you sure you want to cancel this enrolment?');">
-
-                                    @Html.AntiForgeryToken()
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@item.EnrolmentID" />
-
-                                    <button type="submit"
-                                            class="btn btn-danger btn-sm">
-                                        Cancel
-                                    </button>
-                                </form>
-                            </td>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Category</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Action</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.EventName</td>
+                                <td>@item.EventDate.ToString("dd MMM yyyy")</td>
+                                <td>@item.Location</td>
+                                <td>@item.CategoryName</td>
+                                <td>@item.PaymentStatus</td>
+                                <td>@item.PaymentAmount.ToString("C")</td>
+
+                                <td>
+                                    <form asp-controller="Participant"
+                                          asp-action="CancelEnrolment"
+                                          method="post"
+                                          onsubmit="return confirm('Are you sure you want to cancel this enrolment?');">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@item.EnrolmentID" />
+
+                                        <button type="submit"
+                                                class="participant-cancel-button">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     }
 
     <a asp-controller="Home"
        asp-action="ParticipantDashboard"
-       class="btn btn-secondary mt-3">
+       class="participant-back-button">
         Back to Dashboard
     </a>
+
 </div>

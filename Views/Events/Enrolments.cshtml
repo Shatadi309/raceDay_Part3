@@ -4,49 +4,70 @@
     ViewData["Title"] = "Event Enrolments";
 }
 
-<div class="container mt-4">
-    <h2>Event Enrolments</h2>
+<div class="enrolments-page">
+
+    <div class="enrolments-heading">
+        <span class="enrolments-label">EVENT MANAGEMENT</span>
+        <h2>Event Enrolments</h2>
+        <p>View the participants who have enrolled in this event.</p>
+    </div>
 
     @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info">
-            No participants have enrolled in this event yet.
+        <div class="enrolments-empty">
+            <h4>No Enrolments Yet</h4>
+            <p>No participants have enrolled in this event yet.</p>
         </div>
     }
     else
     {
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Enrolment ID</th>
-                        <th>Participant ID</th>
-                        <th>Event Category ID</th>
-                        <th>Enrolment Date</th>
-                        <th>Payment Status</th>
-                        <th>Payment Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+        <div class="enrolments-table-card">
+
+            <div class="enrolments-table-heading">
+                <h5>Participant Enrolment Records</h5>
+                <span>@Model.Count() enrolment(s)</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table enrolments-table">
+                    <thead>
                         <tr>
-                            <td>@item.EnrolmentID</td>
-                            <td>@item.UserID</td>
-                            <td>@item.EventCategoryID</td>
-                            <td>@item.EnrolmentDate.ToString("dd MMM yyyy")</td>
-                            <td>@item.PaymentStatus</td>
-                            <td>@item.PaymentAmount.ToString("C")</td>
+                            <th>Enrolment ID</th>
+                            <th>Participant ID</th>
+                            <th>Event Category ID</th>
+                            <th>Enrolment Date</th>
+                            <th>Payment Status</th>
+                            <th>Payment Amount</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.EnrolmentID</td>
+                                <td>@item.UserID</td>
+                                <td>@item.EventCategoryID</td>
+                                <td>@item.EnrolmentDate.ToString("dd MMM yyyy")</td>
+                                <td>
+                                    <span class="payment-status">
+                                        @item.PaymentStatus
+                                    </span>
+                                </td>
+                                <td>@item.PaymentAmount.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     }
 
     <a asp-controller="Events"
        asp-action="Index"
-       class="btn btn-secondary">
+       class="enrolments-back-button">
         Back to Events
     </a>
+
 </div>

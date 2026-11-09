@@ -2,39 +2,102 @@
     ViewData["Title"] = "Participant Dashboard";
 }
 
-<div class="container mt-5">
-    <div class="card shadow p-4">
-        <h2>Participant Dashboard</h2>
+<div class="participant-dashboard">
 
-        <p>Welcome, @Context.Session.GetString("FullName")!</p>
+    <section class="participant-welcome">
+        <div>
+            <span class="dashboard-label">PARTICIPANT AREA</span>
 
+            <h2>Welcome, @Context.Session.GetString("FullName")!</h2>
+
+            <p>
+                Your RaceDay journey starts here.
+                Explore events, manage your enrolments and
+                keep track of your race results.
+            </p>
+        </div>
+
+        <div class="welcome-decoration">
+            <span>R</span>
+        </div>
+    </section>
+
+    <section class="participant-activities">
+
+        <div class="activity-heading">
+            <span>YOUR ACTIVITIES</span>
+            <h3>What would you like to do?</h3>
+            <p>Choose an option below to continue.</p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="participant-activity-card">
+                    <span class="activity-number">01</span>
+
+                    <h4>Available Events</h4>
+
+                    <p>
+                        Browse available running events
+                        and find one you would like to join.
+                    </p>
+
+                    <a asp-controller="Participant"
+                       asp-action="Events"
+                       class="btn participant-blue-button">
+                        View Events
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="participant-activity-card pink-activity">
+                    <span class="activity-number">02</span>
+
+                    <h4>My Enrolments</h4>
+
+                    <p>
+                        View and manage your event
+                        enrolments in one place.
+                    </p>
+
+                    <a asp-controller="Participant"
+                       asp-action="MyEnrolments"
+                       class="btn participant-pink-button">
+                        My Enrolments
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="participant-activity-card">
+                    <span class="activity-number">03</span>
+
+                    <h4>My Results</h4>
+
+                    <p>
+                        Check your race results and
+                        follow your progress.
+                    </p>
+
+                    <a asp-controller="Participant"
+                       asp-action="MyResults"
+                       class="btn participant-blue-button">
+                        View Results
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="participant-reminder">
+        <h4>Keep moving forward!</h4>
         <p>
-            This area is for participants to view available events,
-            manage their enrolments and check their results.
+            Every event is another opportunity to challenge yourself
+            and celebrate your progress.
         </p>
+    </section>
 
-        <hr />
-
-        <h5>Participant Activities</h5>
-
-        <p>Browse events and find one you would like to participate in.</p>
-
-        <a asp-controller="Participant"
-           asp-action="Events"
-           class="btn btn-primary">
-            View Available Events
-        </a>
-
-        <a asp-controller="Participant"
-           asp-action="MyEnrolments"
-           class="btn btn-success">
-            My Enrolments
-        </a>
-
-        <a asp-controller="Participant"
-           asp-action="MyResults"
-           class="btn btn-info">
-            My Results
-        </a>
-    </div>
 </div>

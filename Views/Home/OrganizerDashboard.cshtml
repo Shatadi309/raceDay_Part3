@@ -2,15 +2,54 @@
     ViewData["Title"] = "Organizer Dashboard";
 }
 
-<div class="container mt-5">
-    <div class="card shadow p-4">
-        <h2>Organizer Dashboard</h2>
+<div class="organizer-dashboard">
 
-        <p>Welcome, @Context.Session.GetString("FullName")!</p>
+    <section class="organizer-welcome">
+        <span class="organizer-label">ORGANIZER AREA</span>
+
+        <h2>Welcome, @Context.Session.GetString("FullName")!</h2>
 
         <p>
-            This area is for event organizers to manage their events
-            and view event-related information.
+            Manage your running events and keep track of
+            event-related information from one place.
         </p>
-    </div>
+    </section>
+
+    <section class="organizer-information">
+
+        <div class="organizer-info-card">
+            <span class="organizer-number">01</span>
+
+            <h3>Manage Your Events</h3>
+
+            <p>
+                Create, update and manage your running events
+                through the event management section.
+            </p>
+        </div>
+
+        <div class="organizer-info-card organizer-pink-card">
+            <span class="organizer-number">02</span>
+
+            <h3>Manage Participants</h3>
+
+            <p>
+                Keep track of event enrolments and participant
+                information.
+            </p>
+        </div>
+
+        <div class="organizer-info-card">
+            <span class="organizer-number">03</span>
+
+            <h3>View Event Results</h3>
+
+            <p>
+                Record race results and review information
+                relating to completed events.
+            </p>
+        </div>
+
+    </section>
+
 </div>

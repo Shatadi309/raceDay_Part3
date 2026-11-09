@@ -4,51 +4,70 @@
     ViewData["Title"] = "Delete Event";
 }
 
-<div class="container mt-5">
+<div class="delete-event-page">
 
-    <div class="card shadow p-4">
+    <div class="delete-event-card">
 
-        <h2 class="text-danger mb-3">Delete Event</h2>
+        <div class="delete-event-icon">
+            !
+        </div>
 
-        <p>Are you sure you want to delete this event?</p>
+        <span class="delete-event-label">EVENT MANAGEMENT</span>
 
-        <hr />
+        <h2>Delete Event</h2>
 
-        <dl class="row">
+        <p class="delete-event-warning">
+            Are you sure you want to delete this event?
+            This action cannot be undone.
+        </p>
 
-            <dt class="col-sm-3">Event Name</dt>
-            <dd class="col-sm-9">@Model.EventName</dd>
+        <div class="delete-event-details">
 
-            <dt class="col-sm-3">Description</dt>
-            <dd class="col-sm-9">@Model.EventDescription</dd>
+            <div class="delete-detail-row">
+                <strong>Event Name</strong>
+                <span>@Model.EventName</span>
+            </div>
 
-            <dt class="col-sm-3">Date</dt>
-            <dd class="col-sm-9">
-                @Model.EventDate.ToString("dd MMM yyyy")
-            </dd>
+            <div class="delete-detail-row">
+                <strong>Description</strong>
+                <span>@Model.EventDescription</span>
+            </div>
 
-            <dt class="col-sm-3">Location</dt>
-            <dd class="col-sm-9">@Model.Location</dd>
+            <div class="delete-detail-row">
+                <strong>Date</strong>
+                <span>@Model.EventDate.ToString("dd MMM yyyy")</span>
+            </div>
 
-            <dt class="col-sm-3">Entry Fee</dt>
-            <dd class="col-sm-9">@Model.EntryFee.ToString("C")</dd>
+            <div class="delete-detail-row">
+                <strong>Location</strong>
+                <span>@Model.Location</span>
+            </div>
 
-        </dl>
+            <div class="delete-detail-row">
+                <strong>Entry Fee</strong>
+                <span>@Model.EntryFee.ToString("C")</span>
+            </div>
+
+        </div>
 
         <form asp-controller="Events"
               asp-action="DeleteConfirmed"
               asp-route-id="@Model.EventID"
               method="post">
 
-            <button type="submit" class="btn btn-danger">
-                Yes, Delete Event
-            </button>
+            <div class="delete-event-buttons">
 
-            <a asp-controller="Events"
-               asp-action="Index"
-               class="btn btn-secondary">
-                Cancel
-            </a>
+                <button type="submit" class="delete-confirm-button">
+                    Yes, Delete Event
+                </button>
+
+                <a asp-controller="Events"
+                   asp-action="Index"
+                   class="delete-cancel-button">
+                    Cancel
+                </a>
+
+            </div>
 
         </form>
 

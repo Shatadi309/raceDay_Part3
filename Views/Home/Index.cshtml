@@ -1,8 +1,130 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="raceday-home">
+
+    <section class="raceday-hero">
+        <div class="hero-content">
+            <span class="hero-eyebrow">WELCOME TO RACEDAY</span>
+
+            <h1>Your next race<br />starts <span>here.</span></h1>
+
+            <p>
+                Discover running events, manage your enrolments and
+                keep track of your results with RaceDay.
+                Everything you need for your running journey in one place.
+            </p>
+
+            <div class="hero-buttons">
+                <a asp-controller="Account"
+                   asp-action="Register"
+                   class="btn hero-primary">
+                    Create an Account
+                </a>
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="btn hero-secondary">
+                    Sign In
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-panel">
+            <div class="hero-panel-top">
+                <span class="panel-dot"></span>
+                <span class="panel-dot"></span>
+                <span class="panel-dot"></span>
+                <span class="panel-title">YOUR RACEDAY JOURNEY</span>
+            </div>
+
+            <div class="journey-item">
+                <span class="journey-number">01</span>
+                <div>
+                    <h3>Discover</h3>
+                    <p>Find an event that inspires you.</p>
+                </div>
+            </div>
+
+            <div class="journey-divider"></div>
+
+            <div class="journey-item">
+                <span class="journey-number pink-number">02</span>
+                <div>
+                    <h3>Get Registered</h3>
+                    <p>Manage your event enrolments.</p>
+                </div>
+            </div>
+
+            <div class="journey-divider"></div>
+
+            <div class="journey-item">
+                <span class="journey-number">03</span>
+                <div>
+                    <h3>Track Your Progress</h3>
+                    <p>View your results and achievements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="raceday-features">
+        <div class="features-heading">
+            <span>THE RACEDAY EXPERIENCE</span>
+            <h2>Everything in one place</h2>
+            <p>
+                Manage your participation with simple and convenient tools.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="raceday-feature-card">
+                    <div class="feature-number">01</div>
+                    <h3>Explore Events</h3>
+                    <p>
+                        Browse available running events and discover
+                        opportunities to take part.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="raceday-feature-card pink-card">
+                    <div class="feature-number">02</div>
+                    <h3>Manage Enrolments</h3>
+                    <p>
+                        Keep your event registrations organised and
+                        view your upcoming participation.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="raceday-feature-card">
+                    <div class="feature-number">03</div>
+                    <h3>View Results</h3>
+                    <p>
+                        Check your race results and follow your progress
+                        after completing an event.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="raceday-cta">
+        <div>
+            <h2>Ready to take part?</h2>
+            <p>Create your account and start exploring RaceDay.</p>
+        </div>
+
+        <a asp-controller="Account"
+           asp-action="Register"
+           class="btn cta-button">
+            Join RaceDay
+        </a>
+    </section>
+
 </div>

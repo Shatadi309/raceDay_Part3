@@ -4,17 +4,19 @@
     ViewData["Title"] = "Available Events";
 }
 
-<div class="container mt-4">
-    <h2 class="mb-3">Available Events</h2>
+<div class="participant-events-page">
 
-    <p class="text-muted">
-        Browse upcoming events and choose one that you would like to participate in.
-    </p>
+    <div class="participant-events-heading">
+        <span class="participant-page-label">DISCOVER RACEDAY</span>
+        <h2>Available Events</h2>
+        <p>Browse upcoming events and choose one that you would like to participate in.</p>
+    </div>
 
     @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info">
-            No events are currently available.
+        <div class="participant-empty">
+            <h4>No Events Available</h4>
+            <p>No events are currently available.</p>
         </div>
     }
     else
@@ -23,39 +25,44 @@
             @foreach (var item in Model)
             {
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.EventName</h5>
+                    <div class="participant-event-card">
 
-                            <p class="card-text">
+                        <div class="participant-event-card-top"></div>
+
+                        <div class="participant-event-card-body">
+                            <h5>@item.EventName</h5>
+
+                            <p class="participant-event-description">
                                 @item.EventDescription
                             </p>
 
-                            <p>
+                            <div class="participant-event-detail">
                                 <strong>Date:</strong>
                                 @item.EventDate.ToString("dd MMM yyyy")
-                            </p>
+                            </div>
 
-                            <p>
+                            <div class="participant-event-detail">
                                 <strong>Location:</strong>
                                 @item.Location
-                            </p>
+                            </div>
 
-                            <p>
+                            <div class="participant-event-detail">
                                 <strong>Entry Fee:</strong>
                                 @item.EntryFee.ToString("C")
-                            </p>
+                            </div>
 
                             <a asp-controller="Participant"
                                asp-action="EventDetails"
                                asp-route-id="@item.EventID"
-                               class="btn btn-primary">
+                               class="participant-event-button">
                                 View Details
                             </a>
                         </div>
+
                     </div>
                 </div>
             }
         </div>
     }
+
 </div>

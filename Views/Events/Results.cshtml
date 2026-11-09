@@ -4,42 +4,67 @@
     ViewData["Title"] = "Event Results";
 }
 
-<h2>Event Results</h2>
+<div class="event-results-page">
 
-<p>Results for Event ID: @ViewBag.EventID</p>
+    <div class="results-heading">
+        <span class="results-label">EVENT MANAGEMENT</span>
+        <h2>Event Results</h2>
+        <p>View the recorded race results for this event.</p>
+        <span class="results-event-id">Event ID: @ViewBag.EventID</span>
+    </div>
 
-@if (Model == null || !Model.Any())
-{
-    <p>No results have been recorded for this event yet.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Result ID</th>
-                <th>Enrolment ID</th>
-                <th>Position</th>
-                <th>Finish Time</th>
-            </tr>
-        </thead>
+    @if (Model == null || !Model.Any())
+    {
+        <div class="results-empty">
+            <h4>No Results Yet</h4>
+            <p>No results have been recorded for this event yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="results-table-card">
 
-        <tbody>
-            @foreach (var result in Model)
-            {
-                <tr>
-                    <td>@result.ResultID</td>
-                    <td>@result.EnrolmentID</td>
-                    <td>@result.Position</td>
-                    <td>@result.FinishTime</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+            <div class="results-table-heading">
+                <h5>Race Results</h5>
+                <span>@Model.Count() result(s)</span>
+            </div>
 
-<a asp-controller="Events"
-   asp-action="Index"
-   class="btn btn-secondary">
-    Back to Events
-</a>
+            <div class="table-responsive">
+                <table class="table results-table">
+                    <thead>
+                        <tr>
+                            <th>Result ID</th>
+                            <th>Enrolment ID</th>
+                            <th>Position</th>
+                            <th>Finish Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var result in Model)
+                        {
+                            <tr>
+                                <td>@result.ResultID</td>
+                                <td>@result.EnrolmentID</td>
+                                <td>
+                                    <span class="result-position">
+                                        @result.Position
+                                    </span>
+                                </td>
+                                <td>@result.FinishTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    }
+
+    <a asp-controller="Events"
+       asp-action="Index"
+       class="results-back-button">
+        Back to Events
+    </a>
+
+</div>

@@ -4,48 +4,72 @@
     ViewData["Title"] = "Record Race Result";
 }
 
-<div class="container mt-4">
-    <h2>Record Race Result</h2>
+<div class="result-form-page">
 
-    <form asp-controller="Events"
-          asp-action="RecordResult"
-          method="post">
+    <div class="result-form-card">
 
-        @Html.AntiForgeryToken()
-
-        <input type="hidden" asp-for="EnrolmentID" />
-        <input type="hidden" asp-for="EventID" />
-
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div class="mb-3">
-            <label asp-for="Position" class="form-label">
-                Finishing Position
-            </label>
-            <input asp-for="Position" type="number" min="1" class="form-control" />
-            <span asp-validation-for="Position" class="text-danger"></span>
+        <div class="result-form-heading">
+            <span class="results-label">EVENT MANAGEMENT</span>
+            <h2>Record Race Result</h2>
+            <p>Enter the participant's finishing position and time.</p>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="FinishTime" class="form-label">
-                Finish Time (HH:MM:SS)
-            </label>
-            <input asp-for="FinishTime"
-                   type="text"
-                   class="form-control"
-                   placeholder="00:35:20"
-                   value="00:00:00" />
-        </div>
+        <form asp-controller="Events"
+              asp-action="RecordResult"
+              method="post">
 
-        <button type="submit" class="btn btn-primary">
-            Save Result
-        </button>
+            @Html.AntiForgeryToken()
 
-        <a asp-controller="Events"
-           asp-action="Enrolments"
-           asp-route-id="@Model.EventID"
-           class="btn btn-secondary">
-            Cancel
-        </a>
-    </form>
+            <input type="hidden" asp-for="EnrolmentID" />
+            <input type="hidden" asp-for="EventID" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Position" class="form-label">
+                    Finishing Position
+                </label>
+
+                <input asp-for="Position"
+                       type="number"
+                       min="1"
+                       class="form-control"
+                       placeholder="Enter finishing position" />
+
+                <span asp-validation-for="Position"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FinishTime" class="form-label">
+                    Finish Time (HH:MM:SS)
+                </label>
+
+                <input asp-for="FinishTime"
+                       type="text"
+                       class="form-control"
+                       placeholder="00:35:20"
+                       value="00:00:00" />
+            </div>
+
+            <div class="result-form-buttons">
+
+                <button type="submit" class="result-save-button">
+                    Save Result
+                </button>
+
+                <a asp-controller="Events"
+                   asp-action="Enrolments"
+                   asp-route-id="@Model.EventID"
+                   class="result-cancel-button">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
