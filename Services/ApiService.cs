@@ -19,7 +19,7 @@ namespace raceDay_Part3.Services
         }
 
         public async Task<string> RegisterAsync(RegisterViewModel model)
-        {//start of task method
+        {
             var response = await _httpClient.PostAsJsonAsync(
                 "api/auth/register",
                 new
@@ -32,7 +32,7 @@ namespace raceDay_Part3.Services
                 });
 
             return await response.Content.ReadAsStringAsync();
-        }//end of task method
+        }
 
         public async Task<(bool Success, string Message, string? Cookie, string? UserData)>
             LoginAsync(LoginViewModel model)
@@ -65,7 +65,7 @@ namespace raceDay_Part3.Services
         }
 
         public async Task<string> LogoutAsync(string? cookie)
-        {//start of logout method
+        {
             using var request = new HttpRequestMessage(
                 HttpMethod.Post,
                 "api/auth/logout");
@@ -78,7 +78,7 @@ namespace raceDay_Part3.Services
             var response = await _httpClient.SendAsync(request);
 
             return await response.Content.ReadAsStringAsync();
-        }//end of logout method
+        }
 
         // Get all events
         public async Task<List<EventViewModel>> GetEventsAsync()
@@ -90,8 +90,6 @@ namespace raceDay_Part3.Services
             return await response.Content.ReadFromJsonAsync<List<EventViewModel>>()
                    ?? new List<EventViewModel>();
         }
-
-        // Create a new event
 
         // Create a new event
         public async Task<string> CreateEventAsync(
@@ -121,10 +119,8 @@ namespace raceDay_Part3.Services
             return await response.Content.ReadAsStringAsync();
         }
 
-
         // Update an existing event
-        public async Task<string> UpdateEventAsync(
-            EventViewModel model)
+        public async Task<string> UpdateEventAsync(EventViewModel model)
         {
             var response = await _httpClient.PutAsJsonAsync(
                 $"api/events/{model.EventID}",
@@ -219,12 +215,11 @@ namespace raceDay_Part3.Services
 
             return await response.Content.ReadFromJsonAsync<List<EnrolmentViewModel>>()
                    ?? new List<EnrolmentViewModel>();
-        }//end of participant's enrolment method
-
+        }
 
         // Get a participant's own results
         public async Task<List<ResultViewModel>> GetMyResultsAsync(string? cookie)
-        {//start of results method
+        {
             using var request = new HttpRequestMessage(
                 HttpMethod.Get,
                 "api/result/me");
@@ -240,11 +235,11 @@ namespace raceDay_Part3.Services
 
             return await response.Content.ReadFromJsonAsync<List<ResultViewModel>>()
                    ?? new List<ResultViewModel>();
-        }//end of results method
+        }
 
         // Cancel a participant's enrolment
         public async Task<string> CancelEnrolmentAsync(int enrolmentID, string? cookie)
-        {//start of cancel method
+        {
             using var request = new HttpRequestMessage(
                 HttpMethod.Delete,
                 $"api/enrolment/{enrolmentID}");
@@ -262,12 +257,12 @@ namespace raceDay_Part3.Services
             }
 
             return await response.Content.ReadAsStringAsync();
-        }//end of cancel method
+        }
 
         // Get enrolments for a specific event
         public async Task<List<OrganizerEnrolmentViewModel>> GetEventEnrolmentsAsync(
             int eventID, string? cookie)
-        {//start of method
+        {
             using var request = new HttpRequestMessage(
                 HttpMethod.Get,
                 $"api/events/{eventID}/enrolment");
@@ -283,7 +278,51 @@ namespace raceDay_Part3.Services
 
             return await response.Content.ReadFromJsonAsync<List<OrganizerEnrolmentViewModel>>()
                    ?? new List<OrganizerEnrolmentViewModel>();
-        }//end of method
+        }
 
+        // Get results for a specific event
+        public async Task<List<ResultViewModel>> GetEventResultsAsync(
+            int eventID, string? cookie)
+        {
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                $"api/event/{eventID}/result");
+
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<ResultViewModel>>()
+                   ?? new List<ResultViewModel>();
+        }
+
+        // Record a participant's race result
+        public async Task<string> RecordResultAsync(
+            int enrolmentID, int position, TimeSpan finishTime, string? cookie)
+        {
+            using var request = new HttpRequestMessage(
+                HttpMethod.Post,
+                $"api/enrolment/{enrolmentID}/result");
+
+            request.Content = JsonContent.Create(new
+            {
+                Position = position,
+                FinishTime = finishTime
+            });
+
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await _httpClient.SendAsync(request);
+
+            return await response.Content.ReadAsStringAsync();
+        }//end of method
     }//end of class
 }//end of namespace

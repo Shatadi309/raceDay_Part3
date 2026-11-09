@@ -1,0 +1,45 @@
+﻿@model List<raceDay_Part3.Models.ResultViewModel>
+
+@{
+    ViewData["Title"] = "Event Results";
+}
+
+<h2>Event Results</h2>
+
+<p>Results for Event ID: @ViewBag.EventID</p>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No results have been recorded for this event yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Result ID</th>
+                <th>Enrolment ID</th>
+                <th>Position</th>
+                <th>Finish Time</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var result in Model)
+            {
+                <tr>
+                    <td>@result.ResultID</td>
+                    <td>@result.EnrolmentID</td>
+                    <td>@result.Position</td>
+                    <td>@result.FinishTime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-controller="Events"
+   asp-action="Index"
+   class="btn btn-secondary">
+    Back to Events
+</a>

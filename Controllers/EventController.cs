@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using raceDay_Part3.Attributes;
 using raceDay_Part3.Models;
 using raceDay_Part3.Services;
 using System;
-using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace raceDay_Part3.Controllers
-{//start of namespace 
+{//start of namespace
     [SessionAuthorize("Organizer")]
     public class EventsController : Controller
     {//start of class
@@ -23,9 +25,9 @@ namespace raceDay_Part3.Controllers
             var events = await _apiService.GetEventsAsync();
 
             return View("EventIndex", events);
-        }//end of display method
+        }
 
-        // Display the Create Event form
+        // Display the Create Event page
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -34,12 +36,11 @@ namespace raceDay_Part3.Controllers
             return View();
         }
 
-        // Submit a new event
+        // Create an event
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EventViewModel model)
         {
-            // Check that a category has been selected
             if (model.CategoryID <= 0)
             {
                 ModelState.AddModelError(
@@ -47,7 +48,6 @@ namespace raceDay_Part3.Controllers
                     "Please select an event category.");
             }
 
-            // Check whether the form is valid
             if (!ModelState.IsValid)
             {
                 ViewBag.Categories = await _apiService.GetCategoriesAsync();
@@ -55,13 +55,10 @@ namespace raceDay_Part3.Controllers
                 return View(model);
             }
 
-            // Get the API session cookie
             string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
 
-            // Send the event to the API
             string result = await _apiService.CreateEventAsync(model, cookie);
 
-            // Check whether the event was created successfully
             if (string.IsNullOrWhiteSpace(result))
             {
                 TempData["Success"] = "Event created successfully.";
@@ -69,43 +66,35 @@ namespace raceDay_Part3.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Display an error if the event was not created
             ModelState.AddModelError("", result);
 
             ViewBag.Categories = await _apiService.GetCategoriesAsync();
 
             return View(model);
-        }//end of method
+        }
 
-
-        // Display the Edit Event form
+        // Display the Edit Event page
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var eventDetails = await _apiService.GetEventByIdAsync(id);
 
             if (eventDetails == null)
-            {
                 return NotFound("Event does not exist.");
-            }
 
             return View(eventDetails);
         }
 
-        // Submit the updated event
+        // Update an event
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EventViewModel model)
         {
             if (id != model.EventID)
-            {
                 return BadRequest();
-            }
 
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
             string result = await _apiService.UpdateEventAsync(model);
 
@@ -122,22 +111,19 @@ namespace raceDay_Part3.Controllers
             return View(model);
         }
 
-
-        // Display the Delete Event confirmation page
+        // Display the Delete Event page
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var eventDetails = await _apiService.GetEventByIdAsync(id);
 
             if (eventDetails == null)
-            {
                 return NotFound("Event does not exist.");
-            }
 
             return View(eventDetails);
         }
 
-        // Confirm and delete the event
+        // Delete an event
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -154,11 +140,11 @@ namespace raceDay_Part3.Controllers
             TempData["Error"] = result;
 
             return RedirectToAction("Index");
-        }//end of confirm and delete
+        }
 
-        // View participants enrolled in an event
+        // Display participants enrolled in an event
         public async Task<IActionResult> Enrolments(int id)
-        {//start of method
+        {
             string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
 
             if (string.IsNullOrEmpty(cookie))
@@ -171,7 +157,80 @@ namespace raceDay_Part3.Controllers
             ViewBag.EventID = id;
 
             return View(enrolments);
-        }//end of method
+        }
 
+        // Display results for a specific event
+        public async Task<IActionResult> Results(int id)
+        {
+            string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
+
+            if (string.IsNullOrEmpty(cookie))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var results = await _apiService.GetEventResultsAsync(id, cookie);
+
+            ViewBag.EventID = id;
+
+            return View(results);
+        }
+
+        // Display the form to record a result
+        [HttpGet]
+        public IActionResult RecordResult(int id, int eventID)
+        {
+            var model = new RecordResultViewModel
+            {
+                EnrolmentID = id,
+                EventID = eventID
+            };
+
+            return View(model);
+        }
+
+        // Save a participant's result
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RecordResult(RecordResultViewModel model)
+        {
+            string? cookie = HttpContext.Session.GetString("ApiSessionCookie");
+
+            if (string.IsNullOrEmpty(cookie))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (model.Position <= 0)
+            {
+                ModelState.AddModelError(
+                    "Position",
+                    "Please enter a valid finishing position.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string result = await _apiService.RecordResultAsync(
+                model.EnrolmentID,
+                model.Position,
+                model.FinishTime,
+                cookie);
+
+            if (result.Contains("recorded", StringComparison.OrdinalIgnoreCase))
+            {
+                TempData["Success"] = "Race result recorded successfully.";
+
+                return RedirectToAction(
+                    "Enrolments",
+                    new { id = model.EventID });
+            }
+
+            ModelState.AddModelError("", result);
+
+            return View(model);
+        }//end of method
     }//end of class
-}//end of namespace
+}//end of namespace 
